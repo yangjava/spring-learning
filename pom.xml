@@ -100,5 +100,6 @@
 		<module>spring-ioc</module>
 		<module>spring-aop</module>
 		<module>spring-transaction</module>
+		<module>spring-jdbctemplate</module>
 	</modules>
 </project>
