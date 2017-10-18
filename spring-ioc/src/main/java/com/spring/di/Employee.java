@@ -1,0 +1,23 @@
+package com.spring.di;
+
+// 员工类
+public class Employee {
+	private String name;
+
+	// 引入Car2对象
+	private Car2 car2;
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setCar2(Car2 car2) {
+		this.car2 = car2;
+	}
+
+	@Override
+	public String toString() {
+		return "Employee [name=" + name + ", car2=" + car2 + "]";
+	}
+
+}

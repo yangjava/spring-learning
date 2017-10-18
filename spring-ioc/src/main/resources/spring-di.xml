@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+		<!-- 对象属性注入 ===========================================================================  -->
+	<!-- 构造器注入 -->
+	<bean id="car" class="com.spring.di.Car">
+		<!-- 通过构造器参数，完成属性注入 -->
+		<constructor-arg index="0" type="java.lang.String" value="保时捷" ></constructor-arg> <!-- 第一个参数 String类型参数 -->
+		<constructor-arg index="1" type="double" value="1000000"></constructor-arg>
+	</bean>
+	<!-- setter方法注入 -->
+<!-- 	<bean id="car2" class="com.spring.di.Car2"> -->
+		<!-- 通过 property 元素完成属性注入 -->
+<!-- 		<property name="name" value="宝马"></property> -->
+<!-- 		<property name="price" value="500000"></property> -->
+<!-- 	</bean> -->
+	
+	<bean id="car2" class="com.spring.di.Car2" p:name="宝马" p:price="1000000"></bean>
+	
+<!-- 	<bean id="employee" class="com.spring.di.Employee"> -->
+<!-- 		<property name="name" value="张三"></property> -->
+<!-- 		<property name="car2" ref="car2"></property> ref引用其他Bean的id或者name -->
+<!-- 	</bean> -->
+	
+	<bean id="employee" class="com.spring.di.Employee" p:name="李四" p:car2-ref="car2"></bean>
+	
+	<!-- 使用SpEL完成属性注入 -->
+	<bean id="carInfo" class="com.spring.di.CarInfo"></bean>
+	<bean id="car2_2" class="com.spring.di.Car2">
+		<property name="name" value="#{carInfo.name}"></property>
+		<property name="price" value="#{carInfo.caculatePrice()}"></property>
+	</bean>
+	
+	<!-- 对象属性注入 ===========================================================================  end-->
+
+
+
+</beans>

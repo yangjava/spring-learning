@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- Bean实例化三种方式 ===========================================================================  -->
+	<!-- id 为Bean定义标识，class是Bean 完整类名，默认调用类 无参数构造器  -->
+	<bean id="bean1" class="com.spring.instance.Bean1"></bean>
+	<!-- 静态工厂方法  class是工厂完整类名，factory-method 是工厂提供静态方法 -->
+	<bean id="bean2" class="com.spring.instance.Bean2Factory" factory-method="getBean2"></bean>
+	<!-- 实例工厂方法，需要创建工厂实例，再创建目标Bean实例 -->
+	<bean id="bean3Factory" class="com.spring.instance.Bean3Factory"></bean>
+	<bean name="bean3" factory-bean="bean3Factory" factory-method="getBean3"></bean>
+
+
+
+
+
+</beans>

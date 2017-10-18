@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- Bean的生命周期  =========================================================================== -->
+	<!-- 通过 init-method指定初始化方法， 通过  destroy-method 指定销毁方法 -->
+	<bean id="lifeCycleBean" class="com.spring.lifecycle.LifeCycleBean" init-method="setup" destroy-method="teardown"></bean>
+	
+	<bean id="userDAO" class="com.spring.lifecycle.UserDAOImpl" init-method="setup" destroy-method="teardown">
+		<property name="company" value="itcast"></property>
+	</bean>
+	<!-- 必须配置后处理Bean , bean没有id 因为由 Spring框架内部调用 -->
+	<bean class="com.spring.lifecycle.MyBeanPostProccessor"></bean>
+
+
+
+
+
+</beans>
