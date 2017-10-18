@@ -1,0 +1,27 @@
+package com.spring.test;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.spring.pointcutadvisor.OrderDAO;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("classpath:spring-pointcutadvisor.xml")
+public class PointcutadvisorTest {
+	// 注入代理对象
+	@Autowired
+	@Qualifier("orderDAOProxy")
+	private OrderDAO orderDAO;
+
+	@Test
+	public void demo1() {
+		orderDAO.save();
+		orderDAO.delete();
+		orderDAO.edit();
+		orderDAO.search();
+	}
+}

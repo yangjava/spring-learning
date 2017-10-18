@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<!-- 带有切点的切面   ================================= -->
+	<!-- 被代理对象 -->
+	<bean id="orderDAO" class="com.spring.pointcutadvisor.OrderDAO"></bean>
+	
+	<!-- 增强 -->
+	<bean id="mymethodinterceptor" class="com.spring.pointcutadvisor.MyMethodInterceptor"></bean>
+	
+	<!-- 定义切点切面 -->
+	<bean id="myadvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<!-- 正则表达式规则 -->
+		<property name="patterns" value=".*save.*,.*delete.*"></property>
+		<property name="advice" ref="mymethodinterceptor"></property>
+	</bean>
+	
+	<!-- 创建代理 -->
+	<bean id="orderDAOProxy" class="org.springframework.aop.framework.ProxyFactoryBean" >
+		<!-- 目标 -->
+		<property name="target" ref="orderDAO"></property>
+		<!-- 针对类代理 -->
+		<property name="proxyTargetClass" value="true"></property>
+		<!-- 增强 -->
+		<property name="interceptorNames" value="myadvisor"></property>
+	</bean>
+	
+</beans>

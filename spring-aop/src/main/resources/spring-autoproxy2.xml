@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 被代理对象 -->
+	<bean id="customerDAO" class="com.spring.advisor.CustomerDAOImpl"></bean>
+	<bean id="orderDAO" class="com.spring.pointcutadvisor.OrderDAO"></bean>
+	
+	<!-- 增强 -->
+	<bean id="mybeforeadvice" class="com.spring.advisor.MyMethodBeforeAdvice"></bean>
+	<bean id="mymethodinterceptor" class="com.spring.pointcutadvisor.MyMethodInterceptor"></bean>
+	
+	<!-- 切面 -->
+	<bean id="myadvisor" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor">
+		<!-- 切点拦截信息 -->
+		<property name="patterns" value="cn\.spring\.pointcutadvisor\.OrderDAO\.save.*,.*delete.*"></property>
+		<!-- 增强 -->
+		<property name="advice" ref="mybeforeadvice"></property>
+	</bean>
+	
+	<!-- 第二种 基于切面信息自动代理  -->
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"></bean>
+	
+</beans>

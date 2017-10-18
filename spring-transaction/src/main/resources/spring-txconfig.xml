@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx 
+	http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- 第三种 声明式事务管理  -->
+	
+	<!-- 导入外部属性文件 -->
+	<context:property-placeholder location="classpath:jdbc.properties"/>
+	
+	<!-- 数据库连接池  -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driver}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	
+	<!-- 业务层 -->
+	<bean id="accountService" class="com.spring.txconfig.AccountServiceImpl">
+		<property name="accountDAO" ref="accountDAO"></property>
+	</bean>
+	
+	<!-- DAO -->
+	<bean id="accountDAO" class="com.spring.txconfig.AccountDAOImpl">
+		<!-- 将连接池注入给DAO ，JdbcDaoSupport 自动创建 JdbcTemplate对象 -->
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- 使用tx定义 事务管理增强 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 方法的事务管理属性 -->
+		<tx:attributes>
+			<!--
+				name="transfer" 事务管理方法名
+				isolation="DEFAULT" 默认隔离级别
+				propagation="REQUIRED"  默认传播行为
+				read-only="false"  是否只读
+				no-rollback-for=""  发生异常不会滚  类似+Exception
+				rollback-for=""  发生异常回滚 类似-Exception
+				timeout="-1"  不超时
+			-->
+			<tx:method name="transfer"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 使用Aop 进行自动代理 -->
+	<aop:config>
+		<!-- 定义切点 -->
+		<aop:pointcut expression="execution(* com.spring.txconfig.AccountService+.*(..))" id="mypointcut"/>
+		<!-- 定义切面 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="mypointcut"/>
+	</aop:config>
+	
+</beans>

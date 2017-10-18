@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 被代理对象 -->
+	<bean id="customerDAO" class="com.spring.advisor.CustomerDAOImpl"></bean>
+	<bean id="orderDAO" class="com.spring.pointcutadvisor.OrderDAO"></bean>
+	
+	<!-- 增强 -->
+	<bean id="mybeforeadvice" class="com.spring.advisor.MyMethodBeforeAdvice"></bean>
+	<bean id="mymethodinterceptor" class="com.spring.pointcutadvisor.MyMethodInterceptor"></bean>
+	
+	<!-- 第一种 BeanName自动代理  -->
+	<!-- 后处理Bean 不需要配置 id -->
+	<bean class="org.springframework.aop.framework.autoproxy.BeanNameAutoProxyCreator">
+		<!-- 对所有DAO结尾Bean 进行代理 -->
+		<property name="beanNames" value="*DAO"></property>
+		<!-- 增强 -->
+		<property name="interceptorNames" value="mymethodinterceptor"></property>
+	</bean>
+	
+</beans>

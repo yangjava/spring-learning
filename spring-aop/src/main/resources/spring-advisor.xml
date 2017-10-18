@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<!-- 不带有 切点和切面 ==================================  -->
+	<!-- 被代理对象 -->
+	<bean id="customerDAO" class="com.spring.advisor.CustomerDAOImpl"></bean>
+	
+	<!-- 增强 -->
+	<bean id="mybeforeadvice" class="com.spring.advisor.MyMethodBeforeAdvice"></bean>
+	
+	<!-- 创建代理  -->
+	<bean id="customerDAOProxy" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<!-- 目标 -->
+		<property name="target" ref="customerDAO"></property>
+		<!-- 针对接口代理 -->
+		<property name="proxyInterfaces" value="com.spring.advisor.CustomerDAO"></property>
+		<!-- 增强 
+			interceptorNames 表示可以运用多个 Advice, 必须写value
+		-->
+		<property name="interceptorNames" value="mybeforeadvice"></property>
+	</bean>
+	
+
+	
+</beans>

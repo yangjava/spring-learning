@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	<!-- 代理目标 -->
+	<bean id="productDAO" class="com.spring.aspectj.ProductDAO"></bean>
+	
+	<!-- 切面 -->
+	<bean id="myAspect" class="com.spring.aspectj.MyAspect"></bean>
+	
+	<!-- 配置xml 使用AspectJ -->
+	<!-- 进行aop配置 -->
+	<aop:config>
+		<!-- 定义切面 -->
+		<aop:aspect ref="myAspect">
+			<!-- 切点 -->
+			<aop:pointcut expression="execution(* com.spring.aspectj.ProductDAO.*(..))" id="mypointcut"/>
+			<!-- 通知 -->
+<!-- 			<aop:before method="before" pointcut-ref="mypointcut"/> -->
+<!-- 			<aop:after-returning method="afterReturing" returning="returnVal" pointcut-ref="mypointcut"/> -->
+<!-- 			<aop:around method="around" pointcut-ref="mypointcut"/> -->
+<!-- 			<aop:after-throwing method="afterThrowing" throwing="ex" pointcut-ref="mypointcut"/> -->
+			<aop:after method="after" pointcut-ref="mypointcut"/>
+		</aop:aspect>
+	</aop:config>
+	
+</beans>
