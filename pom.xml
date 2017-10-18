@@ -101,5 +101,6 @@
 		<module>spring-aop</module>
 		<module>spring-transaction</module>
 		<module>spring-jdbctemplate</module>
+		<module>spring-annotation</module>
 	</modules>
 </project>
